@@ -18,19 +18,15 @@ bool GameSence::init()
 		return false;
 	}
 
-	//add Sprite Sheet
-	auto spritecache = SpriteFrameCache::getInstance();
-	spritecache->addSpriteFramesWithFile("level-sheet.plist");
-
 	//background
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	auto bg = Sprite::create("level-background-0.jpg");
+	auto bg = Sprite::create("background.png");
 	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height /2 + origin.y));
 	this->addChild(bg, 0);
 
 	//test
-	auto texture = Director::getInstance()->getTextureCache()->addImage("bluedar_fly.png");
+	auto texture = Director::getInstance()->getTextureCache()->addImage("blackdra_fly.png");
 	auto frame = SpriteFrame::createWithTexture(texture, CC_RECT_PIXELS_TO_POINTS(Rect(0, 0, 135, 135)));
 
 	bla.reserve(8);
@@ -43,7 +39,7 @@ bool GameSence::init()
 	auto blaAnimate = Animate::create(blaAnimation);
 
 	//mouse
-	this->mouse = Sprite::createWithSpriteFrameName("mouse-0.png");
+	this->mouse = Sprite::create();
 	this->mouse->runAction(RepeatForever::create(blaAnimate));
 	this->mouse->setPosition(Vec2(visibleSize.width / 2 +origin.x, visibleSize.height / 2 + origin.y));
 	this->addChild(this->mouse);

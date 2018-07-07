@@ -49,35 +49,48 @@ bool MenuScene::init()
 		closeItem->setPosition(Vec2(x, y));
 	}
 
-	auto gotoLoginScene = MenuItemFont::create("Easy", [](Ref *pSender) {
-		Director::getInstance()->pushScene(EasyScene::createScene());
+	auto gotoEasyScene = MenuItemFont::create("Easy", [](Ref *pSender) {
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, EasyScene::create
+		()));
 	});
-	if (gotoLoginScene) {
+	if (gotoEasyScene) {
 		float x = origin.x + visibleSize.width / 2;
-		float y = origin.y + visibleSize.height - gotoLoginScene->getContentSize().height / 2;
-		gotoLoginScene->setPosition(Vec2(x, y));
+		float y = origin.y + visibleSize.height - gotoEasyScene->getContentSize().height / 2;
+		gotoEasyScene->setPosition(Vec2(x, y));
 	}
 
-	auto gotoUsersScene = MenuItemFont::create("Medium", [](Ref *pSender) {
-		Director::getInstance()->pushScene(MediumScene::createScene());
+	auto gotoMediumScene = MenuItemFont::create("Medium", [](Ref *pSender) {
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, MediumScene::create
+		()));
 	});
-	if (gotoUsersScene) {
+	if (gotoMediumScene) {
 		float x = origin.x + visibleSize.width / 2;
-		float y = origin.y + visibleSize.height - gotoUsersScene->getContentSize().height / 2 - 50;
-		gotoUsersScene->setPosition(Vec2(x, y));
+		float y = origin.y + visibleSize.height - gotoMediumScene->getContentSize().height / 2 - 50;
+		gotoMediumScene->setPosition(Vec2(x, y));
 	}
 
-	auto gotoModifyScene = MenuItemFont::create("Hard", [](Ref *pSender) {
-		Director::getInstance()->pushScene(HardScene::createScene());
+	auto gotoHardScene = MenuItemFont::create("Hard", [](Ref *pSender) {
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, HardScene::create
+		()));
 	});
-	if (gotoModifyScene) {
+	if (gotoHardScene) {
 		float x = origin.x + visibleSize.width / 2;
-		float y = origin.y + visibleSize.height - gotoModifyScene->getContentSize().height / 2 - 100;
-		gotoModifyScene->setPosition(Vec2(x, y));
+		float y = origin.y + visibleSize.height - gotoHardScene->getContentSize().height / 2 - 100;
+		gotoHardScene->setPosition(Vec2(x, y));
+	}
+
+	auto gotoTestScene = MenuItemFont::create("Test", [](Ref *pSender) {
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, GameSence::create
+		()));
+	});
+	if (gotoTestScene) {
+		float x = origin.x + visibleSize.width / 2;
+		float y = origin.y + visibleSize.height - gotoTestScene->getContentSize().height / 2 - 150;
+		gotoTestScene->setPosition(Vec2(x, y));
 	}
 
 	// create menu, it's an autorelease object
-	auto menu = Menu::create(closeItem, gotoLoginScene, gotoUsersScene, gotoModifyScene, NULL);
+	auto menu = Menu::create(closeItem, gotoEasyScene, gotoMediumScene, gotoHardScene, gotoTestScene, NULL);
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 1);
 
