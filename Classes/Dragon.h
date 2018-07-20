@@ -33,6 +33,9 @@ public:
 	// 开始游戏，传入是否为重力模式
 	void begin(bool gravityEnabled);
 
+	// 检查
+	void check();
+
 private:
 	Sprite * dragon;
 	Vector<SpriteFrame*> flying;

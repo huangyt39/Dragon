@@ -56,3 +56,11 @@ void Dragon::begin(bool gravityEnabled)
 		dragon->getPhysicsBody()->setDynamic(true);
 	}
 }
+
+void Dragon::check()
+{
+	if (dragon->getBoundingBox().getMaxY() > Director::getInstance()->getVisibleSize().height
+		|| dragon->getBoundingBox().getMinY() < 0) {
+		dragon->getPhysicsBody()->setVelocity(Vec2::ZERO);
+	}
+}
