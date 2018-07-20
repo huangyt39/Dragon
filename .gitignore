@@ -8,8 +8,8 @@
 # # .vs
 # .vs/
 
-**
-
-!classes
-!resources
-!README.md
+/*
+!.gitignore
+!/Classes
+!/Resources
+!/README.md
