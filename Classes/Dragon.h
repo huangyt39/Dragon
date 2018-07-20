@@ -27,7 +27,11 @@ public:
 	// 停止
 	void stop();
 
+	// 得到精灵
 	Sprite *get();
+
+	// 开始游戏，传入是否为重力模式
+	void begin(bool gravityEnabled);
 
 private:
 	Sprite * dragon;
