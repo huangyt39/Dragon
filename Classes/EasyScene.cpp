@@ -1,16 +1,24 @@
 #include "EasyScene.h"
 #include "ui\CocosGUI.h"
 
-using namespace cocos2d::ui;
+USING_NS_CC;
 
 cocos2d::Scene * EasyScene::createScene() {
-	return EasyScene::create();
+	auto scene = Scene::createWithPhysics();
+	//debug
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	
+	scene->getPhysicsWorld()->setAutoStep(true);
+	auto layer = EasyScene::create();
+	scene->addChild(layer);
+	return scene;
 }
 
 bool EasyScene::init() {
-	if (!Scene::init()) {
+	if (!Layer::init()) {
 		return false;
-
-		return true;
 	}
+	Dragon dragon(DRAGONBLUE, Vec2(100, 100));
+	this->addChild(dragon.get());
+	return true;
 }

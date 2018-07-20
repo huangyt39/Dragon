@@ -50,7 +50,7 @@ bool MenuScene::init()
 	}
 
 	auto gotoEasyScene = MenuItemFont::create("Easy", [](Ref *pSender) {
-		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, EasyScene::create
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, EasyScene::createScene
 		()));
 	});
 	if (gotoEasyScene) {
