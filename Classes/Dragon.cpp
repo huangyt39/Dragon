@@ -52,7 +52,7 @@ Sprite * Dragon::get()
 
 void Dragon::begin(bool gravityEnabled)
 {
-	if (begin) {
+	if (gravityEnabled) {
 		dragon->getPhysicsBody()->setDynamic(true);
 	}
 }
