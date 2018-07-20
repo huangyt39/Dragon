@@ -37,7 +37,7 @@ void Dragon::die()
 
 void Dragon::move(int dir)
 {
-	dragon->getPhysicsBody()->setVelocity(Vec2(0, dir * 100) + dragon->getPhysicsBody()->getVelocity());
+	dragon->getPhysicsBody()->setVelocity(Vec2(0, dir * 100));
 }
 
 void Dragon::stop()
