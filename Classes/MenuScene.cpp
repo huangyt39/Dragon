@@ -60,7 +60,7 @@ bool MenuScene::init()
 	}
 
 	auto gotoMediumScene = MenuItemFont::create("Medium", [](Ref *pSender) {
-		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, MediumScene::create
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, MediumScene::createScene
 		()));
 	});
 	if (gotoMediumScene) {
@@ -70,7 +70,7 @@ bool MenuScene::init()
 	}
 
 	auto gotoHardScene = MenuItemFont::create("Hard", [](Ref *pSender) {
-		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, HardScene::create
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, HardScene::createScene
 		()));
 	});
 	if (gotoHardScene) {
@@ -79,18 +79,18 @@ bool MenuScene::init()
 		gotoHardScene->setPosition(Vec2(x, y));
 	}
 
-	auto gotoTestScene = MenuItemFont::create("Test", [](Ref *pSender) {
-		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, GameSence::create
-		()));
-	});
-	if (gotoTestScene) {
-		float x = origin.x + visibleSize.width / 2;
-		float y = origin.y + visibleSize.height - gotoTestScene->getContentSize().height / 2 - 150;
-		gotoTestScene->setPosition(Vec2(x, y));
-	}
+	//auto gotoTestScene = MenuItemFont::create("Test", [](Ref *pSender) {
+	//	Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, GameSence::create
+	//	()));
+	//});
+	//if (gotoTestScene) {
+	//	float x = origin.x + visibleSize.width / 2;
+	//	float y = origin.y + visibleSize.height - gotoTestScene->getContentSize().height / 2 - 150;
+	//	gotoTestScene->setPosition(Vec2(x, y));
+	//}
 
 	// create menu, it's an autorelease object
-	auto menu = Menu::create(closeItem, gotoEasyScene, gotoMediumScene, gotoHardScene, gotoTestScene, NULL);
+	auto menu = Menu::create(closeItem, gotoEasyScene, gotoMediumScene, gotoHardScene, /*gotoTestScene, */ NULL);
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 1);
 

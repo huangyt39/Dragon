@@ -1,16 +1,21 @@
 #include "HardScene.h"
 #include "ui\CocosGUI.h"
 
-using namespace cocos2d::ui;
+USING_NS_CC;
 
 cocos2d::Scene * HardScene::createScene() {
-	return HardScene::create();
+	auto scene = Scene::createWithPhysics();
+	//debug
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
+	scene->getPhysicsWorld()->setAutoStep(true);
+	auto layer = HardScene::create();
+	scene->addChild(layer);
+	return scene;
 }
 
 bool HardScene::init() {
-	if (!Scene::init()) {
+	if (!Layer::init()) {
 		return false;
-
-		return true;
 	}
 }
