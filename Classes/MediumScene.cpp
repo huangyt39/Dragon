@@ -1,12 +1,18 @@
-#include "MediumScene.h"
-#include "ui\CocosGUI.h"
+ï»¿#include "MediumScene.h"
+#include "network\HttpClient.h"
+#include "json\document.h"
+#include "string.h"
+
+#define database UserDefault::getInstance()
+
+using namespace cocos2d::network;
 
 USING_NS_CC;
 
 cocos2d::Scene * MediumScene::createScene() {
 	auto scene = Scene::createWithPhysics();
 	//debug
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
 	scene->getPhysicsWorld()->setAutoStep(true);
 	auto layer = MediumScene::create();
@@ -20,20 +26,49 @@ bool MediumScene::init() {
 	}
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
+	auto origin = Director::getInstance()->getVisibleOrigin();
 
-	//Ìí¼ÓÁú
+	// æ·»åŠ èƒŒæ™¯
+	auto bg = Sprite::create("background.jpg");
+	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addChild(bg, 0);
+
+	//æ·»åŠ é¾™
 	dragon = new Dragon(DRAGONBLUE, Vec2(100, visibleSize.height / 2));
 	this->addChild(dragon->get());
-	//Ìí¼ÓÖù×Ó
+	//æ·»åŠ æŸ±å­
 	barrier = new Barrier(4, 1, this);
 
-	// Ìí¼Ó¼àÌýÆ÷
+	// èŽ·å–åŽ†å²æœ€é«˜åˆ†æ•°
+	if (!database->getBoolForKey("isExist")) {
+		database->setBoolForKey("isExist", true);
+	}
+	int best = database->getIntegerForKey("mediumbest");
+
+	// æ·»åŠ åˆ†æ•°
+	auto yBest = Label::createWithTTF("Best Score: ", "fonts/arial.ttf", 28);
+	yBest->setPosition(Vec2(origin.x + visibleSize.width - 120, origin.y + visibleSize.height - 30));
+	this->addChild(yBest, 4);
+
+	Best = Label::createWithTTF(Value(best).asString(), "fonts/arial.ttf", 28);
+	Best->setPosition(Vec2(origin.x + visibleSize.width - 30, origin.y + visibleSize.height - 30));
+	this->addChild(Best, 4);
+
+	auto yScore = Label::createWithTTF("Your Score: ", "fonts/arial.ttf", 28);
+	yScore->setPosition(Vec2(origin.x + visibleSize.width - 120, origin.y + visibleSize.height - 60));
+	this->addChild(yScore, 4);
+
+	Score = Label::createWithTTF("0", "fonts/arial.ttf", 28);
+	Score->setPosition(Vec2(origin.x + visibleSize.width - 30, origin.y + visibleSize.height - 60));
+	this->addChild(Score, 4);
+
+	// æ·»åŠ ç›‘å¬å™¨
 	addListener();
 
-	// µ÷¶ÈÆ÷
+	// è°ƒåº¦å™¨
 	schedule(schedule_selector(MediumScene::checkAll), 0.04f, kRepeatForever, 0);
 
-	//ÓÎÏ·¿ªÊ¼
+	//æ¸¸æˆå¼€å§‹
 	dragon->begin(false);
 	barrier->begin();
 
@@ -41,12 +76,12 @@ bool MediumScene::init() {
 }
 
 void MediumScene::addListener() {
-	// Ìí¼Ó¼üÅÌÊÂ¼þ¼àÌýÆ÷
+	// æ·»åŠ é”®ç›˜äº‹ä»¶ç›‘å¬å™¨
 	auto Keyboardlistener = EventListenerKeyboard::create();
 	Keyboardlistener->onKeyPressed = CC_CALLBACK_2(MediumScene::onKeyPressed, this);
 	Keyboardlistener->onKeyReleased = CC_CALLBACK_2(MediumScene::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(Keyboardlistener, this);
-	// Ìí¼ÓÅö×²¼àÌýÆ÷
+	// æ·»åŠ ç¢°æ’žç›‘å¬å™¨
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(MediumScene::onConcactBegin, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -96,7 +131,13 @@ void MediumScene::onKeyReleased(EventKeyboard::KeyCode code, Event* event) {
 
 
 void MediumScene::checkAll(float f) {
-	barrier->check(dragon->get()->getPosition());
+	// check if the dragon pass a barrier, if so, get one point
+	if(barrier->check(dragon->get()->getPosition())) {
+		score++;
+		char str[10];
+		sprintf(str, "%d", score);
+		Score->setString(str);
+	}
 	dragon->check();
 
 	if (isMove) {
@@ -124,5 +165,35 @@ bool MediumScene::onConcactBegin(PhysicsContact & contact) {
 	unschedule(schedule_selector(MediumScene::checkAll));
 	delete barrier;
 	delete dragon;
+
+	gameover();
+
 	return true;
+}
+
+void MediumScene::gameover() {
+	// gameoveræç¤º
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Sprite* gameover = Sprite::create("gameover.png");
+	gameover->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+	this->addChild(gameover, 3);
+
+	auto restart = MenuItemFont::create("Restart", [](Ref *pSender) {
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, MediumScene::createScene
+		()));
+	});
+	if (restart) {
+		restart->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - restart->getContentSize().height / 2 - 100));
+	}
+
+	auto back = MenuItemFont::create("Back", [](Ref *pSender) {
+		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, MenuScene::createScene
+		()));
+	});
+	if (back) {
+		back->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - restart->getContentSize().height / 2 - back->getContentSize().height - 120));
+	}
+	auto menu = Menu::create(restart, back, NULL);
+	menu->setPosition(Vec2::ZERO);
+	this->addChild(menu, 1);
 }

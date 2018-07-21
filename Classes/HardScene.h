@@ -2,6 +2,12 @@
 #include "cocos2d.h"
 #include "Dragon.h"
 #include "Barrier.h"
+#include "SimpleAudioEngine.h"
+#include "MenuScene.h"
+#include "ui\CocosGUI.h"
+
+using namespace std;
+using namespace CocosDenshion;
 
 class HardScene : public cocos2d::Layer {
 public:
@@ -14,6 +20,8 @@ public:
 	void barrierMove(char c);
 	void dargonMove(char c);
 	virtual bool init();
+	void gameover();
+	void uploadScore();
 
 	CREATE_FUNC(HardScene);
 private:
@@ -23,4 +31,7 @@ private:
 	bool BMove;
 	char Dmovekey;
 	char Bmovekey;
+	Label* Score;
+	Label* Best;
+	int score = 0;
 };

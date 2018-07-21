@@ -4,17 +4,17 @@ Barrier::Barrier(int count, int _mode, Layer *scene):  mode(_mode), sc(scene)
 {
 	vs = Director::getInstance()->getVisibleSize();
 	all.reserve(count);
-
+	
 	for (int i = 0; i < count; ++i) {
 		auto up = createOne();
 		Vec2 pos(vs.width + i * 300,
-			random(260.0f, vs.height) + up->getContentSize().height / 2);
+			 random(260.0f, vs.height - 50) + up->getContentSize().height / 2);
 		up->setPosition(pos);
 		up->setRotation(180);
 		sc->addChild(up);
 
 		auto down = createOne();
-		down->setPosition(Vec2(pos.x, pos.y - 620));
+		down->setPosition(Vec2(pos.x, pos.y - 580));
 		sc->addChild(down);
 
 		std::vector<Sprite *>toAdd{ up, down };
@@ -22,23 +22,27 @@ Barrier::Barrier(int count, int _mode, Layer *scene):  mode(_mode), sc(scene)
 	}
 }
 
-void Barrier::check(Vec2 Dpos)
+bool Barrier::check(Vec2 Dpos)
 {
+	bool getScore = false;
+
 	// 检查是否走出边界
 	auto pos = all.at(0)[0]->getPosition();
 	if (pos.x < -45) {
 		auto newUp = createOne();
 		auto newDown = createOne();
-		newUp->setPosition(Vec2(all.back()[0]->getPositionX() + 300, pos.y));
-		newDown->setPosition(Vec2(all.back()[0]->getPositionX() + 300, pos.y - 620));
+		newUp->setPosition(Vec2(all.back()[0]->getPositionX() + 300, random(260.0f, vs.height - 50) + newUp->getContentSize().height / 2));
+		newDown->setPosition(Vec2(all.back()[0]->getPositionX() + 300, newUp->getPositionY() - 580));
 		auto v = all.at(0)[0]->getPhysicsBody()->getVelocity();
 		newUp->getPhysicsBody()->setVelocity(v);
+		newUp->setRotation(180);
 		newDown->getPhysicsBody()->setVelocity(v);
 		all.erase(std::next(all.begin(), 0));
 		std::vector<Sprite*> toAdd{ newUp, newDown };
 		all.push_back(toAdd);
 		sc->addChild(newUp);
 		sc->addChild(newDown);
+		getScore = true;
 	}
 
 	/*int end = all.size();
@@ -73,7 +77,7 @@ void Barrier::check(Vec2 Dpos)
 		}
 	}
 
-	if (mode != 2) return;
+	if (mode != 2) return getScore;
 	// 判断是否控制权应该切换到下一个柱子
 	for (int i = 0; i < all.size(); ++i) {
 		auto one = all.at(i)[0];
@@ -84,6 +88,8 @@ void Barrier::check(Vec2 Dpos)
 			next[1]->getPhysicsBody()->setVelocity(Vec2(v.x, v.y));
 		}
 	}
+
+	return getScore;
 }
 
 void Barrier::begin()
@@ -103,7 +109,7 @@ void Barrier::begin()
 Sprite* Barrier::createOne()
 {
 	auto one = Sprite::create("stone.png");
-	auto body = PhysicsBody::createBox(Size(90, 400), PhysicsMaterial(100.0f, 0.0f, 1.0f));
+	auto body = PhysicsBody::createBox(Size(60, 370), PhysicsMaterial(100.0f, 0.0f, 1.0f));
 	body->setContactTestBitmask(0xFFFFFFFF);
 	body->setCollisionBitmask(0xFFFFFFFF);
 	body->setContactTestBitmask(0xFFFFFFFF);

@@ -32,6 +32,11 @@ bool MenuScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	// Ìí¼Ó±³¾°
+	auto bg = Sprite::create("background.jpg");
+	bg->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+	this->addChild(bg, 0);
+
 	auto closeItem = MenuItemImage::create(
 		"CloseNormal.png",
 		"CloseSelected.png",
@@ -48,33 +53,33 @@ bool MenuScene::init()
 		closeItem->setPosition(Vec2(x, y));
 	}
 
-	auto gotoEasyScene = MenuItemFont::create("Easy", [](Ref *pSender) {
+	auto gotoEasyScene = MenuItemFont::create("Classical Mode", [](Ref *pSender) {
 		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, EasyScene::createScene
 		()));
 	});
 	if (gotoEasyScene) {
 		float x = origin.x + visibleSize.width / 2;
-		float y = origin.y + visibleSize.height - gotoEasyScene->getContentSize().height / 2;
+		float y = origin.y + visibleSize.height / 2 + gotoEasyScene->getContentSize().height / 2 + 50;
 		gotoEasyScene->setPosition(Vec2(x, y));
 	}
 
-	auto gotoMediumScene = MenuItemFont::create("Medium", [](Ref *pSender) {
+	auto gotoMediumScene = MenuItemFont::create("Arcade Mode", [](Ref *pSender) {
 		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, MediumScene::createScene
 		()));
 	});
 	if (gotoMediumScene) {
 		float x = origin.x + visibleSize.width / 2;
-		float y = origin.y + visibleSize.height - gotoMediumScene->getContentSize().height / 2 - 50;
+		float y = origin.y + visibleSize.height / 2;
 		gotoMediumScene->setPosition(Vec2(x, y));
 	}
 
-	auto gotoHardScene = MenuItemFont::create("Hard", [](Ref *pSender) {
+	auto gotoHardScene = MenuItemFont::create("DoublePlayers Mode", [](Ref *pSender) {
 		Director::getInstance()->replaceScene(TransitionCrossFade::create(0.8, HardScene::createScene
 		()));
 	});
 	if (gotoHardScene) {
 		float x = origin.x + visibleSize.width / 2;
-		float y = origin.y + visibleSize.height - gotoHardScene->getContentSize().height / 2 - 100;
+		float y = origin.y + visibleSize.height / 2 - gotoHardScene->getContentSize().height / 2 - 50;
 		gotoHardScene->setPosition(Vec2(x, y));
 	}
 

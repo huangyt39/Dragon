@@ -14,7 +14,7 @@ public:
 	Barrier(int count, int _mode, Layer *scene);
 
 	// 检查柱子是否出界
-	void check(Vec2 pos);
+	bool check(Vec2 pos);
 
 	// 开始游戏
 	void begin();

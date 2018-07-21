@@ -1,6 +1,10 @@
 #include "AppDelegate.h"
 #include "MenuScene.h"
+#include "SimpleAudioEngine.h"
+#include "ui\CocosGUI.h"
 
+using namespace std;
+using namespace CocosDenshion;
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
 #define _CRT_SECURE_NO_WARNINGS
@@ -99,6 +103,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // run
     director->runWithScene(scene);
+
+
+	//Ô¤¼ÓÔØÒôÀÖÎÄ¼þ
+	auto audio = SimpleAudioEngine::getInstance();
+	audio->preloadBackgroundMusic("music/bgm.mp3");
+	// ²¥·Å±³¾°ÒôÀÖ
+	audio->playBackgroundMusic("music/bgm.mp3", true);
 
     return true;
 }
