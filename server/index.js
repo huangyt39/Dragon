@@ -26,7 +26,7 @@ const server = http.createServer((req, res) => {
 
   function addRank(to) {
     const index = rank.findIndex(value => value.name === to.name);
-    if (index !== -1) rank[index].score = to.score;
+    if (to.name !== 'player' && index !== -1) rank[index].score = to.score;
     else rank.push(to);
     rank = rank
       .sort((a, b) => {
