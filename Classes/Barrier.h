@@ -26,6 +26,9 @@ public:
 	void move(Vec2 pos, int dir);
 
 	void stop();
+
+	//ÓÎÏ·½áÊøÍ£Ö¹Öù×Ó
+	void end();
 private:
 	Sprite * createOne();
 
