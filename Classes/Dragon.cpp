@@ -21,6 +21,9 @@ Dragon::Dragon(int color, Vec2 position)
 	auto body = PhysicsBody::createBox(Size(40, 90), PhysicsMaterial(100.0f, 0.0f, 1.0f));
 	body->setDynamic(false);
 	body->setContactTestBitmask(0xFFFFFFFF);
+	body->setCollisionBitmask(0xFFFFFFFF);
+	body->setContactTestBitmask(0xFFFFFFFF);
+	body->setGroup(1);
 	dragon->setPhysicsBody(body);
 }
 

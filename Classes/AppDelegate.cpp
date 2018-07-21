@@ -1,5 +1,4 @@
 #include "AppDelegate.h"
-#include "GameScene.h"
 #include "MenuScene.h"
 
 // #define USE_AUDIO_ENGINE 1
@@ -94,53 +93,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     register_all_packages();
-
-	// load game resource
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("general-sheet.plist");
-	char totalFrames = 3;
-	char frameName[20];
-	Animation* legAnimation = Animation::create();
-
-	for (int i = 0; i < totalFrames; i++)
-	{
-		sprintf(frameName, "miner-leg-%d.png", i);
-		legAnimation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName));
-	}
-	legAnimation->setDelayPerUnit(0.1);
-	AnimationCache::getInstance()->addAnimation(legAnimation, "legAnimation");
-
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("level-sheet.plist");
-	char mouseTotalFrames = 7;
-	char mouseFrameName[20];
-	Animation* mouseAnimation = Animation::create();
-	for (int i = 0; i < mouseTotalFrames; i++) {
-		sprintf(mouseFrameName, "gem-mouse-%d.png", i);
-		mouseAnimation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(mouseFrameName));
-	}
-	mouseAnimation->setDelayPerUnit(0.2);
-	AnimationCache::getInstance()->addAnimation(mouseAnimation, "mouseAnimation");
-
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("level-sheet.plist");
-	char cloudTotalFrames = 2;
-	char cloudFrameName[20];
-	Animation* cloudAnimation = Animation::create();
-	for (int i = 0; i < cloudTotalFrames; i++) {
-		sprintf(cloudFrameName, "clouds-%d.png", i);
-		cloudAnimation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(cloudFrameName));
-	}
-	cloudAnimation->setDelayPerUnit(0.5);
-	AnimationCache::getInstance()->addAnimation(cloudAnimation, "cloudAnimation");
-
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("level-sheet.plist");
-	char diamondTotalFrames = 4;
-	char diamondFrameName[20];
-	Animation* diamondAnimation = Animation::create();
-	for (int i = 0; i < diamondTotalFrames; i++) {
-		sprintf(diamondFrameName, "diamond-%d.png", i);
-		diamondAnimation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(diamondFrameName));
-	}
-	diamondAnimation->setDelayPerUnit(0.2);
-	AnimationCache::getInstance()->addAnimation(diamondAnimation, "diamondAnimation");
 
 	// create a scene. it's an autorelease object
 	auto scene = MenuScene::create();

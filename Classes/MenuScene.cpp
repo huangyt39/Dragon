@@ -1,5 +1,4 @@
 #include "MenuScene.h"
-#include "GameScene.h"
 #include "SimpleAudioEngine.h"
 #include "EasyScene.h"
 #include "MediumScene.h"
