@@ -37,29 +37,6 @@ bool HardScene::init() {
 	this->addChild(dragon->get());
 	//添加柱子
 	barrier = new Barrier(4, 2, this);
-	
-	// 获取历史最高分数
-	if (!database->getBoolForKey("isExist")) {
-		database->setBoolForKey("isExist", true);
-	}
-	int best = database->getIntegerForKey("hardbest");
-
-	// 添加分数
-	auto yBest = Label::createWithTTF("Best Score: ", "fonts/arial.ttf", 28);
-	yBest->setPosition(Vec2(origin.x + visibleSize.width - 120, origin.y + visibleSize.height - 30));
-	//this->addChild(yBest, 4);
-
-	Best = Label::createWithTTF(Value(best).asString(), "fonts/arial.ttf", 28);
-	Best->setPosition(Vec2(origin.x + visibleSize.width - 30, origin.y + visibleSize.height - 30));
-	//this->addChild(Best, 4);
-
-	auto yScore = Label::createWithTTF("Your Score: ", "fonts/arial.ttf", 28);
-	yScore->setPosition(Vec2(origin.x + visibleSize.width - 120, origin.y + visibleSize.height - 60));
-	//this->addChild(yScore, 4);
-
-	Score = Label::createWithTTF("0", "fonts/arial.ttf", 28);
-	Score->setPosition(Vec2(origin.x + visibleSize.width - 30, origin.y + visibleSize.height - 60));
-	//this->addChild(Score, 4);
 
 	// 添加监听器
 	addListener();
@@ -147,9 +124,6 @@ void HardScene::checkAll(float f) {
 	// check if the dragon pass a barrier, if so, get one point
 	if (barrier->check(dragon->get()->getPosition())) {
 		score++;
-		char str[10];
-		sprintf(str, "%d", score);
-		Score->setString(str);
 	}
 	dragon->check();
 
@@ -196,7 +170,6 @@ bool HardScene::onConcactBegin(PhysicsContact & contact) {
 	delete dragon;
 
 	gameover();
-	uploadScore();
 
 	return true;
 }
@@ -226,11 +199,4 @@ void HardScene::gameover() {
 	auto menu = Menu::create(restart, back, NULL);
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 1);
-}
-
-void HardScene::uploadScore() {
-	// 记录分数
-	if (database->getIntegerForKey("hardbest") < score) {
-		database->setIntegerForKey("hardbest", score);
-	}
 }

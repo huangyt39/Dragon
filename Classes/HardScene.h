@@ -21,7 +21,6 @@ public:
 	void dargonMove(char c);
 	virtual bool init();
 	void gameover();
-	void uploadScore();
 
 	CREATE_FUNC(HardScene);
 private:

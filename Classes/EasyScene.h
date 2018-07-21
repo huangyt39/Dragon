@@ -8,6 +8,7 @@
 
 using namespace std;
 using namespace CocosDenshion;
+using namespace cocos2d::ui;
 
 class EasyScene : public cocos2d::Layer {
 public:
@@ -27,5 +28,6 @@ private:
 	bool over;
 	Label* Score;
 	Label* Best;
+	TextField *nameInput;
 	int score = 0;
 };
