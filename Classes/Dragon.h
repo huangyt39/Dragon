@@ -12,11 +12,14 @@ USING_NS_CC;
 class Dragon
 {
 public:
-	// 不是单例模式，应该保存在场景中声明实例，传入颜色
-	Dragon(int color, Vec2 position);
+	// 不是单例模式，应该保存在场景中声明实例，传入颜色，0为自由移动，1为重力
+	Dragon(int color, Vec2 position, int mode = 0);
 	
 	// 跳一下
 	void jump();
+
+	// 降落
+	void down();
 
 	// 死了
 	void die();

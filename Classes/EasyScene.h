@@ -20,6 +20,7 @@ public:
 	virtual bool init();
 	void gameover();
 	void uploadScore(Ref *pSender);
+	void down(float i);
 
 	CREATE_FUNC(EasyScene);
 private:

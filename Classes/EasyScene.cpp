@@ -17,6 +17,7 @@ cocos2d::Scene * EasyScene::createScene() {
 	//scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	
 	scene->getPhysicsWorld()->setAutoStep(true);
+	scene->getPhysicsWorld()->setGravity(Vec2::ZERO);
 	auto layer = EasyScene::create();
 	scene->addChild(layer);
 	return scene;
@@ -35,7 +36,7 @@ bool EasyScene::init(){
 	this->addChild(bg, 0);
 
 	//Ìí¼ÓÁú
-	dragon = new Dragon(DRAGONBLUE, Vec2(100, visibleSize.height/2));
+	dragon = new Dragon(DRAGONBLUE, Vec2(100, visibleSize.height/2), 1);
 	this->addChild(dragon->get());
 	//Ìí¼ÓÖù×Ó
 	barrier = new Barrier(4, 0, this);
@@ -91,6 +92,7 @@ void EasyScene::addListener() {
 bool EasyScene::onTouchBegan(Touch *touch, Event *event) {
 	if (!over) {
 		dragon->jump();
+		this->scheduleOnce(schedule_selector(EasyScene::down), 500);
 	}
 	return true;
 }
@@ -183,4 +185,9 @@ void EasyScene::uploadScore(cocos2d::Ref * pSender) {
 	request->setTag("Upload Score");
 	cocos2d::network::HttpClient::getInstance()->send(request);
 	request->release();
+}
+
+void EasyScene::down(float i)
+{
+	dragon->down();
 }
