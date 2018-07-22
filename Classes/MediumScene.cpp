@@ -167,6 +167,10 @@ bool MediumScene::onConcactBegin(PhysicsContact & contact) {
 	delete dragon;
 
 	gameover();
+	// 记录分数
+	if (database->getIntegerForKey("easybest") < score) {
+		database->setIntegerForKey("easybest", score);
+	}
 
 	return true;
 }

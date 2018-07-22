@@ -2,10 +2,12 @@
 #include "network\HttpClient.h"
 #include "json\document.h"
 #include "string.h"
+#include "ui\CocosGUI.h"
 
 #define database UserDefault::getInstance()
 
 using namespace cocos2d::network;
+using namespace cocos2d::ui;
 
 USING_NS_CC;
 
@@ -114,6 +116,7 @@ bool EasyScene::onConcactBegin(PhysicsContact & contact) {
 	delete dragon;
 
 	gameover();
+	uploadScore(this);
 
 	return true;
 }
@@ -138,9 +141,21 @@ void EasyScene::gameover() {
 		()));
 	});
 	if (back) {
-		back->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - restart->getContentSize().height / 2 - back->getContentSize().height - 120));
+		back->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2 - restart->getContentSize().height / 2 - back->getContentSize().height / 2 - 120));
 	}
-	auto menu = Menu::create(restart, back, NULL);
+
+	auto origin = Director::getInstance()->getVisibleOrigin();
+	nameInput = TextField::create("name", "arial", 24);
+	if (nameInput) {
+		nameInput->setPosition(Vec2(origin.x + visibleSize.width / 2 - 100, origin.y + visibleSize.height / 2 - nameInput->getContentSize().height / 2 - 200));
+		this->addChild(nameInput, 1);
+	}
+
+	auto upload = Label::createWithSystemFont("Upload Score", "arial", 24);
+	auto uploadItem = MenuItemLabel::create(upload, CC_CALLBACK_1(EasyScene::uploadScore, this));
+	uploadItem->setPosition(Vec2(origin.x + visibleSize.width / 2 + 100, origin.y + visibleSize.height / 2 - nameInput->getContentSize().height / 2 - 200));
+
+	auto menu = Menu::create(restart, back, uploadItem, NULL);
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 1);
 }
@@ -156,7 +171,13 @@ void EasyScene::uploadScore(cocos2d::Ref * pSender) {
 	request->setRequestType(HttpRequest::Type::POST);
 
 	// write the post data
-	std::string str = Value(score).asString();
+	std::string str;
+	if (nameInput->getString() != "") {
+		str = "{\"name\":\"" + nameInput->getString() + "\",\"score\":\"" + Value(score).asString() + "\"}";
+	}
+	else {
+		str = "{\"name\":\"" + (std::string)"player" + "\",\"score\":\"" + Value(score).asString() + "\"}";
+	}
 	request->setRequestData(str.c_str(), str.length());
 	HttpClient::getInstance()->enableCookies(NULL);
 	request->setTag("Upload Score");

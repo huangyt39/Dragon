@@ -3,7 +3,14 @@
 #include "EasyScene.h"
 #include "MediumScene.h"
 #include "HardScene.h"
+#include "network\HttpClient.h"
+#include "json\document.h"
+#include "string.h"
+#include "ui\CocosGUI.h"
 
+using namespace cocos2d::network;
+using namespace rapidjson;
+using namespace cocos2d::ui;
 
 USING_NS_CC;
 
@@ -100,6 +107,14 @@ bool MenuScene::init()
 
 	/////////////////////////////
 	// 3. add your codes below...
+	messageBox = Label::create("", "arial", 20);
+	if (messageBox) {
+		float x = origin.x + visibleSize.width / 2 + 300;
+		float y = origin.y + visibleSize.height / 2 + 100;
+		messageBox->setPosition(Vec2(x, y));
+		this->addChild(messageBox, 1);
+	}
+	getRank(this);
 
 	return true;
 }
@@ -108,6 +123,45 @@ bool MenuScene::init()
 void MenuScene::menuCloseCallback(Ref* pSender) {
 	//Close the cocos2d-x game scene and quit the application
 	Director::getInstance()->end();
+}
+
+void MenuScene::getRank(Ref *pSender) {
+	HttpRequest* request = new HttpRequest();
+	request->setUrl("127.0.0.1:8080");
+	request->setRequestType(HttpRequest::Type::GET);
+	request->setResponseCallback(CC_CALLBACK_2(MenuScene::onHttpRequestCompleted, this));
+
+	// write the post data
+	request->setTag("Get Rank");
+	cocos2d::network::HttpClient::getInstance()->send(request);
+	request->release();
+}
+
+void MenuScene::onHttpRequestCompleted(HttpClient* sender, HttpResponse* response) {
+	if (!response) {
+		return;
+	}
+	if (!response->isSucceed()) {
+		log("%s Failed", response->getHttpRequest()->getTag());
+		log("Error Buffer: %s", response->getErrorBuffer());
+	}
+	else {
+		log("%s OK", response->getHttpRequest()->getTag());
+		auto buffer = response->getResponseData();
+		rapidjson::Document doc;
+		doc.Parse(buffer->data(), buffer->size());
+		if (doc["status"] == true) {
+			std::string str;
+			str += "Rank List\n";
+			const rapidjson::Value& rank = doc["rank"];
+			assert(rank.IsArray());
+			for (rapidjson::SizeType i = 0; i < rank.Size(); i++) {
+				assert(rank[i].IsObject());
+				str += (std::string)rank[i]["name"].GetString() + "  " + (std::string)rank[i]["score"].GetString() + "\n";
+			}
+			this->messageBox->setString(str);
+		}
+	}
 }
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
