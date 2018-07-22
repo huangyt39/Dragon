@@ -29,7 +29,7 @@ Dragon::Dragon(int color, Vec2 position)
 
 void Dragon::jump()
 {
-	dragon->getPhysicsBody()->setVelocity(Vec2(0, 250));
+	dragon->getPhysicsBody()->setVelocity(Vec2(0, 150));
 }
 
 void Dragon::down()
@@ -45,7 +45,7 @@ void Dragon::die()
 
 void Dragon::move(int dir)
 {
-	dragon->getPhysicsBody()->setVelocity(Vec2(0, dir * 100));
+	dragon->getPhysicsBody()->setVelocity(Vec2(0, dir * 150));
 }
 
 void Dragon::stop()

@@ -127,7 +127,7 @@ void MenuScene::menuCloseCallback(Ref* pSender) {
 
 void MenuScene::getRank(Ref *pSender) {
 	HttpRequest* request = new HttpRequest();
-	request->setUrl("127.0.0.1:8080");
+	request->setUrl("http://127.0.0.1:8080");
 	request->setRequestType(HttpRequest::Type::GET);
 	request->setResponseCallback(CC_CALLBACK_2(MenuScene::onHttpRequestCompleted, this));
 

@@ -92,7 +92,7 @@ void EasyScene::addListener() {
 bool EasyScene::onTouchBegan(Touch *touch, Event *event) {
 	if (!over) {
 		dragon->jump();
-		this->scheduleOnce(schedule_selector(EasyScene::down), 500);
+		this->scheduleOnce(schedule_selector(EasyScene::down), 0.7f);
 	}
 	return true;
 }
@@ -113,12 +113,11 @@ bool EasyScene::onConcactBegin(PhysicsContact & contact) {
 	barrier->end();
 	dragon->die();
 	_eventDispatcher->removeAllEventListeners();
-	unschedule(schedule_selector(EasyScene::checkAll));
+	this->unscheduleAllCallbacks();
 	delete barrier;
 	delete dragon;
 
 	gameover();
-	uploadScore(this);
 
 	return true;
 }
@@ -174,7 +173,7 @@ void EasyScene::uploadScore(cocos2d::Ref * pSender) {
 
 	// write the post data
 	std::string str;
-	if (nameInput->getString() != "") {
+	if (!nameInput->getString().empty()) {
 		str = "{\"name\":\"" + nameInput->getString() + "\",\"score\":\"" + Value(score).asString() + "\"}";
 	}
 	else {
