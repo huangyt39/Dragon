@@ -168,8 +168,8 @@ bool MediumScene::onConcactBegin(PhysicsContact & contact) {
 
 	gameover();
 	// 记录分数
-	if (database->getIntegerForKey("easybest") < score) {
-		database->setIntegerForKey("easybest", score);
+	if (database->getIntegerForKey("mediumbest") < score) {
+		database->setIntegerForKey("mediumbest", score);
 	}
 
 	return true;
