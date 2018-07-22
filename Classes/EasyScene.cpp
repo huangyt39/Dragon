@@ -36,7 +36,7 @@ bool EasyScene::init(){
 	this->addChild(bg, 0);
 
 	//Ìí¼ÓÁú
-	dragon = new Dragon(DRAGONBLUE, Vec2(100, visibleSize.height/2), 1);
+	dragon = new Dragon(DRAGONBLUE, Vec2(100, visibleSize.height/2));
 	this->addChild(dragon->get());
 	//Ìí¼ÓÖù×Ó
 	barrier = new Barrier(4, 0, this);

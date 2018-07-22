@@ -1,6 +1,6 @@
 #include "Dragon.h"
 
-Dragon::Dragon(int color, Vec2 position, int mode)
+Dragon::Dragon(int color, Vec2 position)
 {
 	char *name = color == DRAGONBLUE ? "bluedra_fly.png" : "blackdra_fly.png";
 	auto texture = Director::getInstance()->getTextureCache()->addImage(name);
@@ -25,9 +25,6 @@ Dragon::Dragon(int color, Vec2 position, int mode)
 	body->setContactTestBitmask(0xFFFFFFFF);
 	body->setGroup(1);
 	dragon->setPhysicsBody(body);
-	if (mode) {
-		dragon->getPhysicsBody()->setVelocity(Vec2(0, -150));
-	}
 }
 
 void Dragon::jump()
@@ -64,7 +61,7 @@ Sprite * Dragon::get()
 void Dragon::begin(bool gravityEnabled)
 {
 	if (gravityEnabled) {
-		dragon->getPhysicsBody()->setDynamic(true);
+		dragon->getPhysicsBody()->setVelocity(Vec2(0, -150));
 	}
 }
 
